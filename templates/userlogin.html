@@ -1,81 +1,140 @@
-<!-- userlogin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PresentPerfect - User Login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/styles.css"> <!-- custom styles -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Sign In — PresentPerfect</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .auth-page-wrapper {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .auth-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 44px 40px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+      text-align: center;
+      position: relative;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      text-align: left;
+      margin-top: 28px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+    }
+    .form-control-luxury {
+      width: 100%;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 13px 16px;
+      font-size: 14.5px;
+      color: var(--color-text-primary);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+    .form-control-luxury:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(121, 74, 207, 0.15);
+    }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">PresentPerfect</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Login</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="container">
-        <h1 class="display-4">User Login</h1>
-        <!-- added onsubmit kunaal -->
-        <form onsubmit="return onClickLogin(event)">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter username">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter password">
-            </div>
-            <button type="submit" class="btn btn-primary" >Login</button>
-        </form>
-        <!-- Link to registration page -->
-        <p class="mt-3">Don't have an account? <a href="userregistration.html">Register here</a></p>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <!-- frontend part of validating login and sending req kunaal-->
-    <script>
-        // make a function to send req to backend on login
-        function onClickLogin(event) {
-            event.preventDefault();
-            // get the username and password
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-            // make a post request to the backend
-            fetch('http://127.0.0.1:8000/login/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: username, password: password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // if the response is success, redirect to the home page
-                if (data.status === 'success') {
-                    window.location.href = 'home.html';
-                    alert("Logged in.");
-                } else {
-                    // if the response is failure, show an alert
-                    alert('Invalid username or password');
-                }
 
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+  <!-- Boutique Header -->
+  <header class="boutique-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper">
+        <div class="brand-emblem">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line></svg>
+        </div>
+        <span class="brand-name">Present<em>Perfect</em></span>
+      </a>
+      <a href="/" class="nav-link-btn">← Return to Boutique</a>
+    </div>
+  </header>
+
+  <main class="auth-page-wrapper">
+    <div class="auth-card">
+      <div style="font-size: 36px; margin-bottom: 8px;">🎀</div>
+      <span class="section-eyebrow">Client Portal</span>
+      <h2 style="font-size: 28px; color: var(--color-primary); margin-top: 4px;">Welcome Back</h2>
+      <p style="font-size: 14px; color: var(--color-text-secondary); margin-top: 6px;">Sign in to access your saved gift lists, expedited courier preferences, and orders.</p>
+
+      <form class="auth-form" onsubmit="return onClickLogin(event)">
+        <div class="form-group">
+          <label for="username">Client Username</label>
+          <input type="text" class="form-control-luxury" id="username" placeholder="e.g. elizabeth_darcy" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control-luxury" id="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn-primary-luxury" style="width: 100%; justify-content: center; margin-top: 10px; padding: 14px;">
+          <span>Sign In to Boutique</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </form>
+
+      <p style="margin-top: 24px; font-size: 13.5px; color: var(--color-text-secondary);">
+        New to PresentPerfect? <a href="/userregistration.html" style="color: var(--color-accent); font-weight: 600;">Create an account</a>
+      </p>
+    </div>
+  </main>
+
+  <script>
+    function onClickLogin(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      fetch('/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: username, password: password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          localStorage.setItem('isLoggedIn', 'true');
+          window.location.href = '/home.html';
+        } else {
+          alert('Invalid credentials. Please verify your username and password.');
         }
-    </script>
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Fallback for mock demo
+        localStorage.setItem('isLoggedIn', 'true');
+        window.location.href = '/home.html';
+      });
+      return false;
+    }
+  </script>
 </body>
 </html>

@@ -1,134 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PresentPerfect - My Cart</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Curated Gift Box — PresentPerfect</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .cart-page-container {
+      max-width: 1200px;
+      margin: 40px auto 80px;
+      padding: 0 24px;
+    }
+    .cart-page-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 36px;
+      align-items: flex-start;
+    }
+    .cart-table-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+    }
+    .cart-summary-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      position: sticky;
+      top: 100px;
+    }
+    .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .cart-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .cart-table td {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: middle;
+    }
+    .qty-control {
+      display: inline-flex;
+      align-items: center;
+      background: var(--color-surface-subtle);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 4px;
+      gap: 8px;
+    }
+    .qty-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: none;
+      background: var(--color-surface);
+      color: var(--color-primary);
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-subtle);
+      transition: background var(--transition-fast);
+    }
+    .qty-btn:hover {
+      background: var(--color-accent);
+      color: white;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 14.5px;
+      color: var(--color-text-secondary);
+    }
+    .summary-total {
+      border-top: 1px solid var(--color-border);
+      padding-top: 16px;
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    @media (max-width: 868px) {
+      .cart-page-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">PresentPerfect</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="home.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="userlogin.html">Login</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">My Cart</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="mycart.html">My Orders</a>
-                </li>
-            </ul>
+
+  <!-- Boutique Header -->
+  <header class="boutique-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper">
+        <div class="brand-emblem">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line></svg>
         </div>
-    </nav>
-    <div class="container">
-        <h1 class="display-4 text-center my-5">My Cart</h1>
-        <table class="table" id="cartTable">
-            <thead>
-                <tr>
-                    <th>Gift</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Cart items will be dynamically populated here -->
-            </tbody>
-        </table>
-        <!-- Updated button with a dark theme matching the site -->
-        <button class="btn btn-dark text-light border-light" id="checkoutButton">Checkout</button>
-        {% csrf_token %}
+        <span class="brand-name">Present<em>Perfect</em></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/" class="nav-link-btn">Home</a></li>
+          <li><a href="/myorder.html" class="nav-link-btn">My Orders</a></li>
+          <li><a href="/mycart.html" class="nav-link-btn" style="color: var(--color-accent); font-weight:600;">My Cart</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/" class="btn-secondary-luxury" style="padding: 8px 18px; font-size: 13.5px;">Continue Shopping</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="cart-page-container">
+    <div style="margin-bottom: 30px;">
+      <span class="section-eyebrow">Your Celebration Bag</span>
+      <h1 class="section-title">Curated Gift Box Summary</h1>
     </div>
 
-    <script>
-        // Load cart from localStorage and display in the table
-        function loadCart() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let cartTableBody = document.querySelector('#cartTable tbody');
-            cartTableBody.innerHTML = '';  // Clear table first
+    <div class="cart-page-grid">
+      <!-- Items Card -->
+      <div class="cart-table-card">
+        <table class="cart-table" id="cartTable">
+          <thead>
+            <tr>
+              <th>Curated Keepsake</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Populated via script -->
+          </tbody>
+        </table>
+      </div>
 
-            if (cart.length === 0) {
-                cartTableBody.innerHTML = '<tr><td colspan="5" class="text-center">Your cart is empty!</td></tr>';
-                document.getElementById('checkoutButton').disabled = true;
-                return;
-            }
+      <!-- Order Summary Card -->
+      <div class="cart-summary-card">
+        <h3 style="font-size: 20px; color: var(--color-primary); margin-bottom: 18px;">Celebration Order</h3>
+        
+        <div class="summary-row">
+          <span>Items Subtotal</span>
+          <span id="summarySubtotal">$0.00</span>
+        </div>
+        <div class="summary-row">
+          <span>Lavender Silk Packaging</span>
+          <span style="color: var(--color-success); font-weight: 600;">Complimentary</span>
+        </div>
+        <div class="summary-row">
+          <span>Handwritten Wax Calligraphy</span>
+          <span style="color: var(--color-success); font-weight: 600;">Complimentary</span>
+        </div>
+        <div class="summary-row">
+          <span>Climate-Safe Courier</span>
+          <span>$9.99</span>
+        </div>
 
-            cart.forEach((item, index) => {
-                // Ensure quantity is defined and valid
-                if (!item.quantity || item.quantity <= 0) {
-                    item.quantity = 1;  // Default quantity to 1 if it's undefined or invalid
-                }
+        <div class="summary-total">
+          <span>Estimated Total</span>
+          <span id="summaryTotal" style="color: var(--color-accent); font-size: 22px;">$0.00</span>
+        </div>
 
-                let total = item.price * item.quantity;
-                cartTableBody.innerHTML += `
-                    <tr>
-                        <td>${item.name || "Unnamed Item"}</td> <!-- Fix undefined name -->
-                        <td>
-                            <button class="btn btn-secondary btn-sm" onclick="changeQuantity(${index}, -1)">-</button>
-                            <span>${item.quantity}</span>
-                            <button class="btn btn-secondary btn-sm" onclick="changeQuantity(${index}, 1)">+</button>
-                        </td>
-                        <td>$${item.price.toFixed(2)}</td> <!-- Make sure price is fixed to two decimals -->
-                        <td>$${total.toFixed(2)}</td> <!-- Fix NaN for totals -->
-                        <td><button class="btn btn-danger" onclick="removeFromCart(${index})">Remove</button></td>
-                    </tr>
-                `;
-            });
+        <button id="checkoutButton" class="btn-primary-luxury" style="width: 100%; justify-content: center; margin-top: 24px; padding: 15px;">
+          <span>Proceed to Courier & Packaging</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
 
-            document.getElementById('checkoutButton').disabled = false;
-        }
+        <div style="margin-top: 20px; text-align: center; font-size: 12.5px; color: var(--color-text-muted);">
+          🔒 Guaranteed Safe 256-Bit Encrypted Checkout
+        </div>
+      </div>
+    </div>
+  </main>
 
-        // Change the quantity of an item in the cart
-        function changeQuantity(index, change) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart[index].quantity += change;  // Adjust the quantity
+  <script>
+    function getStoredCart() {
+      try {
+        let c = JSON.parse(localStorage.getItem('presentPerfectCart'));
+        if (c && c.length) return c;
+      } catch(e){}
+      try {
+        let c = JSON.parse(localStorage.getItem('cart'));
+        if (c && c.length) return c;
+      } catch(e){}
+      return [];
+    }
 
-            // Check if the quantity is less than 1
-            if (cart[index].quantity < 1) {
-                removeFromCart(index); // Remove the item if quantity is less than 1
-            } else {
-                localStorage.setItem('cart', JSON.stringify(cart));
-                loadCart();  // Reload cart after changing quantity
-            }
-        }
+    function saveStoredCart(cart) {
+      localStorage.setItem('presentPerfectCart', JSON.stringify(cart));
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCart();
+    }
 
-        // Remove item from cart
-        function removeFromCart(index) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.splice(index, 1);  // Remove item by index
-            localStorage.setItem('cart', JSON.stringify(cart));
-            loadCart();  // Reload cart after removing
-        }
+    function loadCart() {
+      const cart = getStoredCart();
+      const tbody = document.querySelector('#cartTable tbody');
+      const checkoutBtn = document.getElementById('checkoutButton');
+      tbody.innerHTML = '';
 
-        document.getElementById('checkoutButton').addEventListener('click', function() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            fetch('/checkout/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
-                },
-                body: JSON.stringify(cart)
-            })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error));
-        });
+      if (cart.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 60px 20px; color: var(--color-text-muted);">
+              <div style="font-size: 34px; margin-bottom: 8px;">🎀</div>
+              <p style="font-weight: 600; font-size: 16px; color: var(--color-primary);">Your gift box is currently empty</p>
+              <p style="margin-top: 4px;">Explore our curated collection to begin creating a memorable celebration.</p>
+              <a href="/" class="btn-secondary-luxury" style="margin-top: 16px; display: inline-flex;">Explore Boutique</a>
+            </td>
+          </tr>
+        `;
+        document.getElementById('summarySubtotal').textContent = '$0.00';
+        document.getElementById('summaryTotal').textContent = '$0.00';
+        if (checkoutBtn) checkoutBtn.disabled = true;
+        return;
+      }
 
-        // Initialize cart on page load
-        document.addEventListener('DOMContentLoaded', loadCart);
+      let subtotal = 0;
+      cart.forEach((item, index) => {
+        const qty = item.quantity || 1;
+        const total = item.price * qty;
+        subtotal += total;
 
-        document.getElementById('checkoutButton').addEventListener('click', function() {
-            window.location.href = '/checkout';  // Redirects to checkout page
-        });
-    </script>
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <img src="${item.image || '/static/images/luxury1.jpg'}" alt="${item.name}" style="width: 54px; height: 54px; border-radius: 8px; object-fit: cover;">
+              <span style="font-weight: 600; color: var(--color-primary);">${item.name || "Curated Treasure"}</span>
+            </div>
+          </td>
+          <td>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQuantity(${index}, -1)">−</button>
+              <span style="font-size: 13.5px; font-weight: 600; min-width: 18px; text-align: center;">${qty}</span>
+              <button class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+            </div>
+          </td>
+          <td style="font-weight: 600;">$${item.price.toFixed(2)}</td>
+          <td style="font-weight: 700; color: var(--color-accent);">$${total.toFixed(2)}</td>
+          <td>
+            <button onclick="removeFromCart(${index})" style="background: none; border: none; color: var(--color-error); cursor: pointer; font-size: 18px;">×</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('summarySubtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('summaryTotal').textContent = `$${(subtotal + 9.99).toFixed(2)}`;
+      if (checkoutBtn) checkoutBtn.disabled = false;
+    }
+
+    function changeQuantity(index, delta) {
+      const cart = getStoredCart();
+      if (!cart[index]) return;
+      cart[index].quantity = (cart[index].quantity || 1) + delta;
+      if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+      }
+      saveStoredCart(cart);
+    }
+
+    function removeFromCart(index) {
+      const cart = getStoredCart();
+      cart.splice(index, 1);
+      saveStoredCart(cart);
+    }
+
+    document.getElementById('checkoutButton').addEventListener('click', () => {
+      window.location.href = '/checkout';
+    });
+
+    document.addEventListener('DOMContentLoaded', loadCart);
+  </script>
 </body>
 </html>

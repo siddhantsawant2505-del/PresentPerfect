@@ -1,159 +1,276 @@
-<!DOCTYPE- html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PresentPerfect - Checkout</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique Checkout — PresentPerfect</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .checkout-wrapper {
+      max-width: 1100px;
+      margin: 40px auto 80px;
+      padding: 0 24px;
+    }
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 36px;
+      align-items: flex-start;
+    }
+    .checkout-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: var(--shadow-card);
+    }
+    .form-group-lux {
+      margin-bottom: 18px;
+    }
+    .form-group-lux label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+    }
+    .input-lux {
+      width: 100%;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      font-size: 14px;
+      color: var(--color-text-primary);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+    .input-lux:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(121, 74, 207, 0.12);
+    }
+    .payment-tab-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .payment-tab-btn {
+      flex: 1;
+      background: var(--color-surface-subtle);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      transition: all var(--transition-fast);
+    }
+    .payment-tab-btn.active {
+      background: var(--color-surface);
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      box-shadow: var(--shadow-subtle);
+    }
+    @media (max-width: 868px) {
+      .checkout-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">PresentPerfect</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="home.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="userlogin.html">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="mycart.html">My Cart</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="myorder.html">My Order</a>
-                </li>
-            </ul>
+
+  <header class="boutique-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper">
+        <div class="brand-emblem">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line></svg>
         </div>
-    </nav>
+        <span class="brand-name">Present<em>Perfect</em></span>
+      </a>
+      <a href="/mycart.html" class="nav-link-btn">← Back to Gift Box</a>
+    </div>
+  </header>
 
-    <div class="container">
-        <h1 class="display-4 text-center my-5">Checkout</h1>
-
-        <div id="cartDetails">
-            <h3 class="my-4">Your Cart</h3>
-            <table class="table" id="checkoutTable">
-                <thead>
-                    <tr>
-                        <th>Gift</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Cart items will be dynamically populated here -->
-                </tbody>
-            </table>
-            <h4 class="text-right">Grand Total: $<span id="grandTotal">0.00</span></h4>
-        </div>
-
-        <div id="paymentSection" class="my-5">
-            <h3>Payment Options</h3>
-            <form id="paymentForm">
-                <div class="form-group">
-                    <label for="paymentMethod">Choose a payment method:</label>
-                    <select class="form-control" id="paymentMethod">
-                        <option value="credit-card">Credit Card</option>
-                        <option value="paypal">PayPal</option>
-                        <option value="bank-transfer">Bank Transfer</option>
-                    </select>
-                </div>
-
-                <div id="creditCardForm" style="display:none;">
-                    <div class="form-group">
-                        <label for="cardNumber">Card Number</label>
-                        <input type="text" class="form-control" id="cardNumber" placeholder="Enter your card number">
-                    </div>
-                    <div class="form-group">
-                        <label for="expiryDate">Expiry Date</label>
-                        <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
-                    </div>
-                    <div class="form-group">
-                        <label for="cvv">CVV</label>
-                        <input type="text" class="form-control" id="cvv" placeholder="CVV">
-                    </div>
-                </div>
-
-                <div id="paypalForm" style="display:none;">
-                    <div class="alert alert-info">You will be redirected to PayPal to complete your payment.</div>
-                </div>
-
-                <div id="bankTransferForm" style="display:none;">
-                    <div class="alert alert-info">Please transfer the total amount to the following account: <br> Account No: 1234567890<br> Bank: ABC Bank<br> IFSC: ABCD1234</div>
-                </div>
-
-                <button type="submit" class="btn btn-success">Place Order</button>
-            </form>
-        </div>
+  <main class="checkout-wrapper">
+    <div style="margin-bottom: 30px;">
+      <span class="section-eyebrow">Final Step</span>
+      <h1 class="section-title">Delivery & Packaging Finalization</h1>
     </div>
 
-    <script>
-        // Load cart from localStorage
-        function loadCart() {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let checkoutTableBody = document.querySelector('#checkoutTable tbody');
-            let grandTotalElement = document.getElementById('grandTotal');
-            let grandTotal = 0;
+    <div class="checkout-grid">
+      <!-- Left: Delivery & Payment Details -->
+      <div class="checkout-card">
+        <h3 style="font-size: 20px; color: var(--color-primary); margin-bottom: 20px;">Recipient & Delivery Address</h3>
+        
+        <form id="paymentForm">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group-lux">
+              <label for="recipientName">Recipient Name</label>
+              <input type="text" id="recipientName" class="input-lux" placeholder="e.g. Lady Clara" required>
+            </div>
+            <div class="form-group-lux">
+              <label for="deliveryDate">Desired Delivery Date</label>
+              <input type="date" id="deliveryDate" class="input-lux" required>
+            </div>
+          </div>
 
-            checkoutTableBody.innerHTML = '';
+          <div class="form-group-lux">
+            <label for="deliveryAddress">Delivery Address</label>
+            <input type="text" id="deliveryAddress" class="input-lux" placeholder="Street, Suite or Apartment" required>
+          </div>
 
-            if (cart.length === 0) {
-                checkoutTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Your cart is empty!</td></tr>';
-                return;
-            }
+          <div class="form-group-lux">
+            <label for="calligraphyNote">Handwritten Calligraphy Message (Included Free)</label>
+            <textarea id="calligraphyNote" class="input-lux" rows="3" placeholder="Write the heartfelt sentiment to be penned in sepia ink and sealed with gold wax..."></textarea>
+          </div>
 
-            cart.forEach(item => {
-                let total = item.price * item.quantity;
-                grandTotal += total;
-                checkoutTableBody.innerHTML += `
-                    <tr>
-                        <td>${item.name}</td>
-                        <td>${item.quantity}</td>
-                        <td>$${item.price}</td>
-                        <td>$${total.toFixed(2)}</td>
-                    </tr>
-                `;
-            });
+          <h3 style="font-size: 20px; color: var(--color-primary); margin: 30px 0 16px;">Secure Payment</h3>
+          <div class="payment-tab-group">
+            <button type="button" class="payment-tab-btn active" onclick="setPaymentType('card', this)">💳 Credit Card</button>
+            <button type="button" class="payment-tab-btn" onclick="setPaymentType('paypal', this)">🅿️ PayPal</button>
+            <button type="button" class="payment-tab-btn" onclick="setPaymentType('bank', this)">🏛️ Bank Wire</button>
+          </div>
 
-            grandTotalElement.textContent = grandTotal.toFixed(2);
-        }
+          <div id="cardFields">
+            <div class="form-group-lux">
+              <label for="cardNumber">Card Number</label>
+              <input type="text" id="cardNumber" class="input-lux" placeholder="4242 •••• •••• 4242">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group-lux">
+                <label for="exp">Expiry Date</label>
+                <input type="text" id="exp" class="input-lux" placeholder="MM/YY">
+              </div>
+              <div class="form-group-lux">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" class="input-lux" placeholder="•••">
+              </div>
+            </div>
+          </div>
 
-        // Handle form submission
-        document.getElementById('paymentForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+          <button type="submit" class="btn-primary-luxury" style="width: 100%; justify-content: center; margin-top: 24px; padding: 15px;">
+            <span>Authorize & Confirm Gift Dispatch</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
+        </form>
+      </div>
 
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let totalAmount = document.getElementById('grandTotal').textContent;
+      <!-- Right: Summary of Order -->
+      <div class="checkout-card" style="background: var(--color-surface-subtle);">
+        <h3 style="font-size: 20px; color: var(--color-primary); margin-bottom: 20px;">Gift Box Review</h3>
+        <div id="checkoutSummaryList" style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px;">
+          <!-- Loaded dynamically -->
+        </div>
 
-        if (cart.length === 0) {
-           alert('Your cart is empty!');
-           return;
-        }
+        <div style="border-top: 1px solid var(--color-border); padding-top: 16px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
+            <span>Keepsakes Total</span>
+            <span id="reviewSubtotal">$0.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
+            <span>Signature Ribbon & Wax Seal</span>
+            <span style="color: var(--color-success); font-weight: 600;">Free</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 14px;">
+            <span>Climate-Controlled Courier</span>
+            <span>$9.99</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: 700; color: var(--color-primary); border-top: 1px solid var(--color-border); padding-top: 14px;">
+            <span>Grand Total</span>
+            <span id="grandTotal" style="color: var(--color-accent);">$0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-        // Add current order to the localStorage orders array
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        let timestamp = new Date().toLocaleString();
-        let newOrder = {
-            cart: cart,
-            totalAmount: totalAmount,
-            timestamp: timestamp
-        };
-        orders.push(newOrder);
-        localStorage.setItem('orders', JSON.stringify(orders));
+  <script>
+    function getStoredCart() {
+      try {
+        let c = JSON.parse(localStorage.getItem('presentPerfectCart'));
+        if (c && c.length) return c;
+      } catch(e){}
+      try {
+        let c = JSON.parse(localStorage.getItem('cart'));
+        if (c && c.length) return c;
+      } catch(e){}
+      return [];
+    }
 
-        alert('Order placed successfully!');
+    function loadCheckout() {
+      const cart = getStoredCart();
+      const list = document.getElementById('checkoutSummaryList');
+      list.innerHTML = '';
 
-    // Clear cart after placing the order
-        localStorage.removeItem('cart');
+      if (cart.length === 0) {
+        list.innerHTML = '<p style="color: var(--color-text-muted);">No items in cart.</p>';
+        return;
+      }
 
-    // Redirect to home page
-        window.location.href = '../home.html';
+      let subtotal = 0;
+      cart.forEach(item => {
+        const qty = item.quantity || 1;
+        const total = item.price * qty;
+        subtotal += total;
+
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.justifyContent = 'space-between';
+        row.style.alignItems = 'center';
+        row.innerHTML = `
+          <div>
+            <div style="font-weight: 600; font-size: 14px; color: var(--color-primary);">${item.name}</div>
+            <div style="font-size: 12.5px; color: var(--color-text-muted);">$${item.price.toFixed(2)} × ${qty}</div>
+          </div>
+          <div style="font-weight: 700; color: var(--color-accent); font-size: 14.5px;">$${total.toFixed(2)}</div>
+        `;
+        list.appendChild(row);
+      });
+
+      document.getElementById('reviewSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('grandTotal').textContent = `$${(subtotal + 9.99).toFixed(2)}`;
+    }
+
+    function setPaymentType(type, btn) {
+      document.querySelectorAll('.payment-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const cart = getStoredCart();
+      if (cart.length === 0) {
+        alert('Your gift box is empty.');
+        return;
+      }
+
+      const total = document.getElementById('grandTotal').textContent;
+      const recipient = document.getElementById('recipientName').value;
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      
+      orders.push({
+        recipient: recipient,
+        items: cart,
+        total: total,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        status: 'Preparing Signature Lavender Packaging'
+      });
+
+      localStorage.setItem('orders', JSON.stringify(orders));
+      localStorage.removeItem('presentPerfectCart');
+      localStorage.removeItem('cart');
+
+      alert('✨ Celebration Order Confirmed! Your bespoke gift box is being prepared.');
+      window.location.href = '/myorder.html';
     });
 
-        // Initialize cart on page load
-        document.addEventListener('DOMContentLoaded', loadCart);
-    </script>
+    document.addEventListener('DOMContentLoaded', loadCheckout);
+  </script>
 </body>
 </html>

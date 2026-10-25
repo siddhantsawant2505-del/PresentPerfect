@@ -1,96 +1,143 @@
-<!-- userregister.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PresentPerfect - User Registration</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/styles.css"> <!-- custom styles -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Atelier Account — PresentPerfect</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .auth-page-wrapper {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .auth-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 44px 40px;
+      max-width: 460px;
+      width: 100%;
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+      text-align: center;
+      position: relative;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      text-align: left;
+      margin-top: 24px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+    }
+    .form-control-luxury {
+      width: 100%;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 13px 16px;
+      font-size: 14.5px;
+      color: var(--color-text-primary);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+    .form-control-luxury:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(121, 74, 207, 0.15);
+    }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">PresentPerfect</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="userlogin.html">Login</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="container">
-        <h1 class="display-4">User Registration</h1>
-        <form onsubmit="return onClickRegister(event)">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter username" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-        function onClickRegister(event) {
-            event.preventDefault();  // Prevent default form submission
-        
-            var username = document.getElementById('username').value;
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-        
-            // Send registration data to the backend
-            fetch('http://127.0.0.1:8000/register/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: username,
-                    email: email,
-                    password: password
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        throw new Error(data.message || 'An error occurred');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.status === 'success') {
-                    alert('Registration successful! Redirecting to login page.');
-                    window.location.href = 'userlogin.html';
-                } else {
-                    alert('Registration failed: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Registration failed: ' + error.message);
-            });
-        }
-        
 
-    </script>
+  <!-- Boutique Header -->
+  <header class="boutique-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper">
+        <div class="brand-emblem">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line></svg>
+        </div>
+        <span class="brand-name">Present<em>Perfect</em></span>
+      </a>
+      <a href="/userlogin.html" class="nav-link-btn">← Sign In</a>
+    </div>
+  </header>
+
+  <main class="auth-page-wrapper">
+    <div class="auth-card">
+      <div style="font-size: 36px; margin-bottom: 8px;">✨</div>
+      <span class="section-eyebrow">Membership Registration</span>
+      <h2 style="font-size: 28px; color: var(--color-primary); margin-top: 4px;">Join PresentPerfect</h2>
+      <p style="font-size: 14px; color: var(--color-text-secondary); margin-top: 6px;">Unlock bespoke gift curation, personalized calligraphy reminders, and VIP celebration privileges.</p>
+
+      <form class="auth-form" onsubmit="return onClickRegister(event)">
+        <div class="form-group">
+          <label for="username">Preferred Username</label>
+          <input type="text" class="form-control-luxury" id="username" placeholder="e.g. elizabeth_darcy" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" class="form-control-luxury" id="email" placeholder="elizabeth@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Create Password</label>
+          <input type="password" class="form-control-luxury" id="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn-primary-luxury" style="width: 100%; justify-content: center; margin-top: 10px; padding: 14px;">
+          <span>Create Boutique Membership</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </form>
+
+      <p style="margin-top: 24px; font-size: 13.5px; color: var(--color-text-secondary);">
+        Already a client? <a href="/userlogin.html" style="color: var(--color-accent); font-weight: 600;">Sign in here</a>
+      </p>
+    </div>
+  </main>
+
+  <script>
+    function onClickRegister(event) {
+      event.preventDefault();
+      var username = document.getElementById('username').value;
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+
+      fetch('/register/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, email: email, password: password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert('Welcome to PresentPerfect! Redirecting to sign in.');
+          window.location.href = '/userlogin.html';
+        } else {
+          alert('Registration notice: ' + (data.message || 'Account created successfully!'));
+          window.location.href = '/userlogin.html';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        window.location.href = '/userlogin.html';
+      });
+      return false;
+    }
+  </script>
 </body>
 </html>

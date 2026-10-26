@@ -152,7 +152,7 @@ export default function Catalog({
                 {/* Footer Row */}
                 <div className="flex items-center justify-between pt-3 border-t border-[#E8E1F0]">
                   <span className="text-lg font-bold text-[#251838]">
-                    ${gift.price.toFixed(2)}
+                    ${Number(gift.price).toFixed(2)}
                   </span>
                   <button
                     onClick={() => handleAdd(gift)}

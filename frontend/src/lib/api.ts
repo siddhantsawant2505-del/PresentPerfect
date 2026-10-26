@@ -45,7 +45,11 @@ export async function fetchGifts(category?: string, occasion?: string, search?: 
 
     if (!res.ok) throw new Error('API response not ok');
     const data = await res.json();
-    return data.results || data;
+    const rawList = data.results || (Array.isArray(data) ? data : []);
+    return rawList.map((item: any) => ({
+      ...item,
+      price: typeof item.price === 'number' ? item.price : Number(item.price) || 0,
+    }));
   } catch (err) {
     console.warn('Using fallback gifts data:', err);
     let items = FALLBACK_GIFTS;

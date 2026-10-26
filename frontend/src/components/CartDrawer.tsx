@@ -62,7 +62,7 @@ export default function CartDrawer() {
                     {item.name}
                   </h5>
                   <p className="text-xs font-bold text-[#794ACF]">
-                    ${item.price.toFixed(2)} × {item.quantity}
+                    ${Number(item.price).toFixed(2)} × {item.quantity}
                   </p>
                 </div>
                 <button

@@ -219,9 +219,9 @@ export default function CheckoutPage() {
                 <div key={item.id} className="py-2.5 flex justify-between items-center text-xs">
                   <div>
                     <div className="font-semibold text-[#251838]">{item.name}</div>
-                    <div className="text-[11px] text-[#8A7D9B]">${item.price.toFixed(2)} × {item.quantity}</div>
+                    <div className="text-[11px] text-[#8A7D9B]">${Number(item.price).toFixed(2)} × {item.quantity}</div>
                   </div>
-                  <span className="font-bold text-[#794ACF]">${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="font-bold text-[#794ACF]">${(Number(item.price) * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>

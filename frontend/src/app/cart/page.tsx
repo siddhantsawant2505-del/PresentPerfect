@@ -60,7 +60,7 @@ export default function CartPage() {
                         {item.name}
                       </h4>
                       <p className="text-xs font-bold text-[#794ACF]">
-                        ${item.price.toFixed(2)}
+                        ${Number(item.price).toFixed(2)}
                       </p>
                     </div>
 
@@ -85,7 +85,7 @@ export default function CartPage() {
 
                     <div className="text-right min-w-16">
                       <span className="font-bold text-sm text-[#251838]">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ${(Number(item.price) * item.quantity).toFixed(2)}
                       </span>
                     </div>
 

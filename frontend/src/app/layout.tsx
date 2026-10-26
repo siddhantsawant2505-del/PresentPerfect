@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full antialiased scroll-smooth">
+    <html lang="en" suppressHydrationWarning className="h-full antialiased scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -24,7 +24,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#F8F6FB] text-[#5C4F6E]">
+      <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#F8F6FB] text-[#5C4F6E]">
         <CartProvider>
           {children}
           <CartDrawer />

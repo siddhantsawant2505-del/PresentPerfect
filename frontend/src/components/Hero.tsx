@@ -154,7 +154,7 @@ export default function Hero({ onSelectOccasion }: HeroProps) {
                   {currentItem.name}
                 </h3>
                 <span className="text-xl font-bold text-[#794ACF]">
-                  ${currentItem.price.toFixed(2)}
+                  ${Number(currentItem.price).toFixed(2)}
                 </span>
               </div>
               <p className="text-xs text-[#5C4F6E] line-clamp-2 leading-relaxed">

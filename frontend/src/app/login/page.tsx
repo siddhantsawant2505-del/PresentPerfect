@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { apiLogin } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Lock, Gift } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -26,17 +26,16 @@ export default function LoginPage() {
       const res = await apiLogin({ username, password });
       if (res.status === 'success') {
         localStorage.setItem('isLoggedIn', 'true');
-        showToast('✨ Welcome to PresentPerfect');
+        showToast('Welcome to PresentPerfect');
         router.push('/');
       } else {
-        // Fallback for demo
         localStorage.setItem('isLoggedIn', 'true');
-        showToast('✨ Signed In');
+        showToast('Signed in to Atelier');
         router.push('/');
       }
     } catch (err) {
       localStorage.setItem('isLoggedIn', 'true');
-      showToast('✨ Signed In');
+      showToast('Signed in to Atelier');
       router.push('/');
     } finally {
       setLoading(false);
@@ -44,73 +43,95 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#FAF8FD]">
       <Navbar />
 
       <main className="flex-1 flex items-center justify-center px-6 py-16">
-        <div className="bg-white border border-[#E8E1F0] rounded-3xl p-10 max-w-md w-full shadow-[0_8px_24px_-4px_rgba(37,24,56,0.06),0_0_40px_-5px_rgba(121,74,207,0.15)] text-center">
-          <div className="text-4xl mb-2">🎀</div>
-          <span className="text-xs font-bold text-[#794ACF] uppercase tracking-wider block mb-1">
-            Client Portal
-          </span>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#251838] mb-2">
-            Welcome Back
-          </h2>
-          <p className="text-xs text-[#5C4F6E] mb-7 leading-relaxed">
-            Sign in to access your saved gift lists, expedited courier preferences, and orders.
-          </p>
+        <div className="w-full max-w-md bg-white border border-[#EBE4F2] rounded-3xl p-8 sm:p-10 shadow-subtle">
+          <div className="text-center mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-[#FAF8FD] border border-[#EBE4F2] mx-auto flex items-center justify-center text-[#6E39C4] mb-3">
+              <Gift className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#8C7F9D] block mb-1">
+              Patron Portal
+            </span>
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1E142B] tracking-tight">
+              Welcome Back
+            </h1>
+            <p className="text-xs text-[#5D506F] mt-1.5 leading-relaxed">
+              Sign in to manage your celebratory consignments and private atelier allocations.
+            </p>
+          </div>
 
           {error && (
-            <div className="mb-4 text-xs text-[#C24141] bg-[#FDF2F2] p-2.5 rounded-xl border border-[#C24141]/20">
+            <div className="mb-5 p-3 rounded-xl bg-[#B83A3A]/10 border border-[#B83A3A]/20 text-[#B83A3A] text-xs font-semibold text-center">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4 text-left">
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#8A7D9B]">
-                Client Username
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#8C7F9D]">
+                Username / Email
               </label>
               <input
                 type="text"
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="e.g. elizabeth_darcy"
-                className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-3 text-xs text-[#251838] outline-none focus:border-[#794ACF] focus:ring-2 focus:ring-[#794ACF]/15 transition-all"
+                placeholder="e.g. client@presentperfect.com"
+                className="bg-[#FAF8FD] border border-[#EBE4F2] focus:border-[#6E39C4] focus:bg-white rounded-xl px-4 py-2.5 text-xs text-[#1E142B] outline-none transition-[border-color,background-color]"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#8A7D9B]">
-                Password
-              </label>
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#8C7F9D]">
+                  Password
+                </label>
+                <a href="#" className="text-[11px] text-[#6E39C4] hover:underline">
+                  Forgot?
+                </a>
+              </div>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-3 text-xs text-[#251838] outline-none focus:border-[#794ACF] focus:ring-2 focus:ring-[#794ACF]/15 transition-all"
+                className="bg-[#FAF8FD] border border-[#EBE4F2] focus:border-[#6E39C4] focus:bg-white rounded-xl px-4 py-2.5 text-xs text-[#1E142B] outline-none transition-[border-color,background-color]"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 bg-[#794ACF] hover:bg-[#6332BE] text-white py-3.5 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(121,74,207,0.35)] transition-all cursor-pointer"
+              className={`w-full py-3.5 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-xs press-tactile cursor-pointer mt-2 ${
+                loading
+                  ? 'bg-[#8C7F9D] text-white cursor-wait'
+                  : 'bg-[#1E142B] hover:bg-[#140C1E] text-white'
+              }`}
             >
-              <span>{loading ? 'Authenticating...' : 'Sign In to Boutique'}</span>
-              <ArrowRight className="w-4 h-4" />
+              {loading ? (
+                <span>Authenticating...</span>
+              ) : (
+                <>
+                  <Lock className="w-3.5 h-3.5 text-[#E7C58E]" />
+                  <span>Sign In to Atelier</span>
+                </>
+              )}
             </button>
           </form>
 
-          <p className="mt-7 text-xs text-[#5C4F6E]">
-            New to PresentPerfect?{' '}
-            <Link href="/register" className="text-[#794ACF] font-semibold hover:underline">
-              Create an account
+          <div className="mt-7 pt-6 border-t border-[#F5F1FA] text-center text-xs text-[#5D506F]">
+            <span>New to the Atelier? </span>
+            <Link
+              href="/register"
+              className="font-bold text-[#6E39C4] hover:text-[#5A29A6] transition-colors"
+            >
+              Create an Account
             </Link>
-          </p>
+          </div>
         </div>
       </main>
 

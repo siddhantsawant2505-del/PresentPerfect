@@ -1,51 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  /* Lavender & Amethyst Silk Design Tokens (DESIGN.md) */
-  --color-primary: #251838;
-  --color-primary-hover: #1A0F2B;
-  --color-accent: #794ACF;
-  --color-accent-hover: #6332BE;
-  --color-accent-light: #F0EBF7;
-  --color-accent-subtle: #F6F2FC;
-  --color-gold: #C89B58;
-  --color-gold-light: #FDF8F0;
-  --color-gold-hover: #B78946;
+  /* Emil Kowalski & Lavender Silk Luxury Tokens */
+  --color-primary: #1E142B;
+  --color-primary-hover: #140C1E;
+  --color-accent: #6E39C4;
+  --color-accent-hover: #5A29A6;
+  --color-accent-light: #F2ECFA;
+  --color-accent-subtle: #F7F3FC;
+  --color-gold: #C29352;
+  --color-gold-light: #FBF6EE;
+  --color-gold-hover: #AA7E40;
   
-  --color-neutral-bg: #F8F6FB;
+  --color-neutral-bg: #FAF8FD;
   --color-surface: #FFFFFF;
-  --color-surface-subtle: #F4F0F9;
-  --color-border: #E8E1F0;
-  --color-border-hover: #D5C7E6;
-  --color-border-focus: #9D74DE;
+  --color-surface-subtle: #F5F1FA;
+  --color-border: #EBE4F2;
+  --color-border-hover: #D7C9E3;
+  --color-border-focus: #8C5CD6;
   
-  --color-text-primary: #251838;
-  --color-text-secondary: #5C4F6E;
-  --color-text-muted: #8A7D9B;
+  --color-text-primary: #1E142B;
+  --color-text-secondary: #5D506F;
+  --color-text-muted: #8C7F9D;
   --color-text-inverse: #FFFFFF;
   
-  --color-success: #2E7D58;
-  --color-error: #C24141;
+  --color-success: #257850;
+  --color-error: #B83A3A;
 
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
+  /* Emil Kowalski Animation & Physics Tokens */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-press: 140ms;
+  --duration-popover: 180ms;
+  --duration-drawer: 320ms;
+
   --radius-xs: 4px;
   --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
   --radius-full: 9999px;
 
-  --shadow-subtle: 0 2px 8px -2px rgba(37, 24, 56, 0.05), 0 1px 4px -1px rgba(37, 24, 56, 0.04);
-  --shadow-card: 0 8px 24px -4px rgba(37, 24, 56, 0.06), 0 2px 6px -1px rgba(37, 24, 56, 0.03);
-  --shadow-hover: 0 20px 38px -10px rgba(121, 74, 207, 0.18), 0 6px 12px -2px rgba(37, 24, 56, 0.04);
-  --shadow-float: 0 24px 48px -12px rgba(37, 24, 56, 0.16);
-  --shadow-glow: 0 0 40px -5px rgba(121, 74, 207, 0.25);
-
-  --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-normal: 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-subtle: 0 1px 3px rgba(30, 20, 43, 0.04), 0 1px 2px rgba(30, 20, 43, 0.02);
+  --shadow-card: 0 4px 16px -2px rgba(30, 20, 43, 0.05), 0 1px 4px rgba(30, 20, 43, 0.02);
+  --shadow-hover: 0 16px 32px -6px rgba(110, 57, 196, 0.14), 0 4px 8px -2px rgba(30, 20, 43, 0.04);
+  --shadow-float: 0 20px 40px -10px rgba(30, 20, 43, 0.14);
 }
 
 body {
@@ -56,49 +59,77 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  background-image: 
-    radial-gradient(circle at 10% 10%, rgba(121, 74, 207, 0.04) 0%, transparent 40%),
-    radial-gradient(circle at 90% 40%, rgba(200, 155, 88, 0.03) 0%, transparent 45%),
-    radial-gradient(circle at 30% 80%, rgba(121, 74, 207, 0.03) 0%, transparent 50%);
-  background-attachment: fixed;
 }
 
 h1, h2, h3, h4, .font-serif {
   font-family: var(--font-serif);
   color: var(--color-text-primary);
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
 }
 
-/* Animations */
-@keyframes heroPulse {
-  0% { transform: scale(0.95) translate(0, 0); opacity: 0.8; }
-  100% { transform: scale(1.08) translate(20px, 15px); opacity: 1; }
+/* Tabular figures for prices, ratings and counters */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
-@keyframes pulseRipple {
-  0% { transform: scale(0.8); opacity: 1; }
-  100% { transform: scale(2.2); opacity: 0; }
+/* Emil Kowalski Tactile Button / Press Feedback */
+.press-tactile {
+  transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+  will-change: transform;
 }
 
-@keyframes floatBounce {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-8px); }
+.press-tactile:active {
+  transform: scale(0.97);
 }
 
-.animate-pulse-dot::after {
-  content: '';
-  position: absolute;
-  top: -4px; left: -4px; right: -4px; bottom: -4px;
-  border-radius: 50%;
-  border: 2px solid var(--color-accent);
-  animation: pulseRipple 2s infinite;
+.press-icon {
+  transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
 }
 
-.animate-float-bounce {
-  animation: floatBounce 4s ease-in-out infinite alternate;
+.press-icon:active {
+  transform: scale(0.92);
 }
 
-.hero-glow-anim {
-  animation: heroPulse 10s ease-in-out infinite alternate;
+/* Emil Drawer Physics (Ionic curve) */
+.drawer-enter {
+  animation: drawerIn 320ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+@keyframes drawerIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Emil Popover Origin-Aware scale entrance */
+.popover-enter {
+  transform-origin: var(--transform-origin, top);
+  animation: popoverIn 180ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Emil Blur-Crossfade bridge for state morphs */
+.morph-blur {
+  transition: filter 160ms ease, opacity 160ms ease;
+}
+
+.morph-blur-active {
+  filter: blur(2px);
+  opacity: 0.75;
 }

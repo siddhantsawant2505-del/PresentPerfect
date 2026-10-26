@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { apiRegister } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Gift, UserPlus } from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -24,11 +24,11 @@ export default function RegisterPage() {
     try {
       await apiRegister({ username, email, password });
       localStorage.setItem('isLoggedIn', 'true');
-      showToast('✨ Welcome to PresentPerfect Ateliers');
+      showToast('Welcome to PresentPerfect Ateliers');
       router.push('/');
     } catch (err) {
       localStorage.setItem('isLoggedIn', 'true');
-      showToast('✨ Account registered');
+      showToast('Account Registered');
       router.push('/');
     } finally {
       setLoading(false);
@@ -36,39 +36,43 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#FAF8FD]">
       <Navbar />
 
       <main className="flex-1 flex items-center justify-center px-6 py-16">
-        <div className="bg-white border border-[#E8E1F0] rounded-3xl p-10 max-w-md w-full shadow-[0_8px_24px_-4px_rgba(37,24,56,0.06),0_0_40px_-5px_rgba(121,74,207,0.15)] text-center">
-          <div className="text-4xl mb-2">✨</div>
-          <span className="text-xs font-bold text-[#794ACF] uppercase tracking-wider block mb-1">
-            Membership Registration
-          </span>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#251838] mb-2">
-            Join PresentPerfect
-          </h2>
-          <p className="text-xs text-[#5C4F6E] mb-7 leading-relaxed">
-            Unlock bespoke gift curation, personalized calligraphy reminders, and VIP celebration privileges.
-          </p>
+        <div className="w-full max-w-md bg-white border border-[#EBE4F2] rounded-3xl p-8 sm:p-10 shadow-subtle">
+          <div className="text-center mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-[#FAF8FD] border border-[#EBE4F2] mx-auto flex items-center justify-center text-[#6E39C4] mb-3">
+              <Gift className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#8C7F9D] block mb-1">
+              Patron Membership
+            </span>
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1E142B] tracking-tight">
+              Create an Account
+            </h1>
+            <p className="text-xs text-[#5D506F] mt-1.5 leading-relaxed">
+              Unlock bespoke gift curation, priority atelier access, and complimentary calligraphy privileges.
+            </p>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4 text-left">
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#8A7D9B]">
-                Preferred Username
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#8C7F9D]">
+                Username
               </label>
               <input
                 type="text"
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="e.g. elizabeth_darcy"
-                className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-3 text-xs text-[#251838] outline-none focus:border-[#794ACF] focus:ring-2 focus:ring-[#794ACF]/15 transition-all"
+                placeholder="e.g. vivienne_m"
+                className="bg-[#FAF8FD] border border-[#EBE4F2] focus:border-[#6E39C4] focus:bg-white rounded-xl px-4 py-2.5 text-xs text-[#1E142B] outline-none transition-[border-color,background-color]"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#8A7D9B]">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#8C7F9D]">
                 Email Address
               </label>
               <input
@@ -76,14 +80,14 @@ export default function RegisterPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="elizabeth@example.com"
-                className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-3 text-xs text-[#251838] outline-none focus:border-[#794ACF] focus:ring-2 focus:ring-[#794ACF]/15 transition-all"
+                placeholder="client@domain.com"
+                className="bg-[#FAF8FD] border border-[#EBE4F2] focus:border-[#6E39C4] focus:bg-white rounded-xl px-4 py-2.5 text-xs text-[#1E142B] outline-none transition-[border-color,background-color]"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#8A7D9B]">
-                Create Password
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#8C7F9D]">
+                Password
               </label>
               <input
                 type="password"
@@ -91,26 +95,39 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-3 text-xs text-[#251838] outline-none focus:border-[#794ACF] focus:ring-2 focus:ring-[#794ACF]/15 transition-all"
+                className="bg-[#FAF8FD] border border-[#EBE4F2] focus:border-[#6E39C4] focus:bg-white rounded-xl px-4 py-2.5 text-xs text-[#1E142B] outline-none transition-[border-color,background-color]"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 bg-[#794ACF] hover:bg-[#6332BE] text-white py-3.5 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(121,74,207,0.35)] transition-all cursor-pointer"
+              className={`w-full py-3.5 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-xs press-tactile cursor-pointer mt-2 ${
+                loading
+                  ? 'bg-[#8C7F9D] text-white cursor-wait'
+                  : 'bg-[#1E142B] hover:bg-[#140C1E] text-white'
+              }`}
             >
-              <span>{loading ? 'Creating Account...' : 'Create Boutique Membership'}</span>
-              <ArrowRight className="w-4 h-4" />
+              {loading ? (
+                <span>Registering Account...</span>
+              ) : (
+                <>
+                  <UserPlus className="w-3.5 h-3.5 text-[#E7C58E]" />
+                  <span>Join Atelier Patron Circle</span>
+                </>
+              )}
             </button>
           </form>
 
-          <p className="mt-7 text-xs text-[#5C4F6E]">
-            Already a client?{' '}
-            <Link href="/login" className="text-[#794ACF] font-semibold hover:underline">
-              Sign in here
+          <div className="mt-7 pt-6 border-t border-[#F5F1FA] text-center text-xs text-[#5D506F]">
+            <span>Already have an account? </span>
+            <Link
+              href="/login"
+              className="font-bold text-[#6E39C4] hover:text-[#5A29A6] transition-colors"
+            >
+              Sign In
             </Link>
-          </p>
+          </div>
         </div>
       </main>
 

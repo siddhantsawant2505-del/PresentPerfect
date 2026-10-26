@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Gift } from '@/types';
 import { useCart } from '@/context/CartContext';
-import { Check, Plus } from 'lucide-react';
+import { Check, Plus, Sparkles, Filter } from 'lucide-react';
 
 interface CatalogProps {
   gifts: Gift[];
@@ -33,15 +33,15 @@ export default function Catalog({
 
   const categories = [
     { id: 'all', label: 'All Treasures' },
-    { id: 'luxury', label: '💎 Luxury' },
-    { id: 'handmade', label: '🌿 Handmade' },
-    { id: 'chocolate', label: '🍫 Chocolates' },
-    { id: 'personalized', label: '✨ Personalized' },
-    { id: 'fashion', label: '⌚ Fashion & Silk' },
+    { id: 'luxury', label: 'Haute Luxury' },
+    { id: 'handmade', label: 'Artisanal Crafts' },
+    { id: 'chocolate', label: 'Fine Chocolates' },
+    { id: 'personalized', label: 'Engraved Keepsakes' },
+    { id: 'fashion', label: 'Silk & Accessories' },
   ];
 
   const occasions = [
-    { id: 'all', label: 'All' },
+    { id: 'all', label: 'All Occasions' },
     { id: 'anniversary', label: 'Anniversary' },
     { id: 'birthday', label: 'Birthday' },
     { id: 'wedding', label: 'Wedding' },
@@ -50,30 +50,30 @@ export default function Catalog({
   ];
 
   return (
-    <section id="catalogSection" className="max-w-[1320px] mx-auto px-6 mb-24">
-      {/* Header */}
-      <div className="flex flex-col items-center text-center mb-10">
-        <span className="text-xs font-bold text-[#794ACF] uppercase tracking-wider mb-2">
-          The Boutique Vault
-        </span>
-        <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#251838] mb-3">
-          Curated Gifts for Every Celebration
+    <section id="catalogSection" className="max-w-[1360px] mx-auto px-6 mb-28">
+      {/* Section Header */}
+      <div className="flex flex-col items-center text-center mb-12">
+        <div className="inline-flex items-center gap-2 bg-[#F2ECFA] text-[#6E39C4] px-3.5 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-[0.16em] mb-3">
+          <span>The Atelier Vault</span>
+        </div>
+        <h2 className="font-serif text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#1E142B] tracking-tight mb-3">
+          Curated Treasures for Legacy Moments
         </h2>
-        <p className="text-sm sm:text-base text-[#5C4F6E] max-w-xl">
-          Each item is individually verified for ethical craftsmanship, material purity, and timeless aesthetic delight.
+        <p className="text-sm sm:text-[15px] text-[#5D506F] max-w-xl leading-relaxed">
+          Every piece is verified for heirloom materiality, pure provenance, and bespoke presentation packaging.
         </p>
       </div>
 
-      {/* Primary Category Filter Bar */}
-      <div className="flex items-center justify-center gap-2.5 flex-wrap mb-6" role="tablist">
+      {/* Primary Category Switcher - Tactile Segmented Bar */}
+      <div className="flex items-center justify-center gap-2 flex-wrap mb-6" role="tablist">
         {categories.map((c) => (
           <button
             key={c.id}
             onClick={() => onCategoryChange(c.id)}
-            className={`px-5 py-2.5 rounded-full text-xs font-semibold shadow-sm transition-all cursor-pointer ${
+            className={`px-4.5 py-2 rounded-full text-xs font-semibold border transition-colors press-tactile cursor-pointer ${
               activeCategory === c.id
-                ? 'bg-[#251838] text-white shadow-md'
-                : 'bg-white hover:bg-[#F0EBF7] text-[#5C4F6E] hover:text-[#794ACF] border border-[#E8E1F0]'
+                ? 'bg-[#1E142B] text-white border-[#1E142B] shadow-xs'
+                : 'bg-white text-[#5D506F] border-[#EBE4F2] hover:border-[#6E39C4]/40 hover:text-[#1E142B]'
             }`}
           >
             {c.label}
@@ -81,17 +81,20 @@ export default function Catalog({
         ))}
       </div>
 
-      {/* Secondary Occasion Sub-filter */}
-      <div className="flex items-center justify-center gap-2 flex-wrap mb-12">
-        <span className="text-xs font-bold text-[#8A7D9B] mr-2">Filter by Occasion:</span>
+      {/* Secondary Occasion Micro-Chips */}
+      <div className="flex items-center justify-center gap-1.5 flex-wrap mb-12">
+        <span className="text-[11px] font-semibold text-[#8C7F9D] mr-2 flex items-center gap-1">
+          <Filter className="w-3 h-3" />
+          <span>Occasion:</span>
+        </span>
         {occasions.map((o) => (
           <button
             key={o.id}
             onClick={() => onOccasionChange(o.id)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
+            className={`px-3 py-1 rounded-full text-[11.5px] font-medium transition-colors press-tactile cursor-pointer ${
               activeOccasion === o.id
-                ? 'bg-[#F0EBF7] border border-[#794ACF] text-[#794ACF] font-bold'
-                : 'border border-dashed border-[#E8E1F0] hover:border-[#794ACF] text-[#8A7D9B] hover:text-[#794ACF]'
+                ? 'bg-[#F2ECFA] border border-[#6E39C4]/40 text-[#6E39C4] font-semibold'
+                : 'bg-transparent text-[#8C7F9D] hover:text-[#1E142B] border border-transparent hover:border-[#EBE4F2]'
             }`}
           >
             {o.label}
@@ -99,20 +102,22 @@ export default function Catalog({
         ))}
       </div>
 
-      {/* Products Grid */}
+      {/* Products Grid - Editorial Presentation */}
       {gifts.length === 0 ? (
-        <div className="text-center py-20 bg-white border border-[#E8E1F0] rounded-3xl p-8">
-          <div className="text-4xl mb-3">🎁</div>
-          <h3 className="font-serif text-xl font-bold text-[#251838] mb-2">No matching treasures found</h3>
-          <p className="text-xs text-[#5C4F6E] max-w-sm mx-auto mb-6">
-            Try adjusting your search criteria or resetting filters to explore our full boutique collection.
+        <div className="text-center py-20 bg-white border border-[#EBE4F2] rounded-3xl p-8 max-w-md mx-auto">
+          <div className="w-12 h-12 rounded-2xl bg-[#FAF8FD] border border-[#EBE4F2] mx-auto flex items-center justify-center text-[#6E39C4] mb-3">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <h3 className="font-serif text-lg font-bold text-[#1E142B] mb-1.5">No Matching Treasures</h3>
+          <p className="text-xs text-[#5D506F] leading-relaxed mb-6">
+            We couldn't find items matching both selections. Adjust your celebration filter or view all pieces.
           </p>
           <button
             onClick={() => {
               onCategoryChange('all');
               onOccasionChange('all');
             }}
-            className="bg-[#251838] hover:bg-[#794ACF] text-white px-6 py-2.5 rounded-full text-xs font-semibold transition-all cursor-pointer"
+            className="bg-[#1E142B] hover:bg-[#140C1E] text-white px-5 py-2 rounded-full text-xs font-semibold press-tactile cursor-pointer"
           >
             Reset All Filters
           </button>
@@ -122,54 +127,73 @@ export default function Catalog({
           {gifts.map((gift) => (
             <div
               key={gift.id}
-              className="bg-white border border-[#E8E1F0] hover:border-[#D5C7E6] rounded-2xl p-4 shadow-sm hover:shadow-[0_20px_38px_-10px_rgba(121,74,207,0.18)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col group relative"
+              className="bg-white border border-[#EBE4F2] hover:border-[#D7C9E3] rounded-2xl p-4 shadow-subtle hover:shadow-card transition-[border-color,box-shadow] duration-200 flex flex-col group relative"
             >
-              {/* Product Image */}
-              <div className="relative w-full h-56 rounded-xl overflow-hidden bg-[#F4F0F9] mb-4">
+              {/* Product Portrait Frame */}
+              <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-[#FAF8FD] mb-4">
                 <img
                   src={gift.image}
                   alt={gift.name}
                   loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-104"
                 />
-                <span className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-sm border border-[#E8E1F0] text-[#251838] text-[10.5px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+
+                {/* Refined Woven-Style Origin Tag */}
+                <div className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-sm border border-[#EBE4F2] text-[#1E142B] text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider shadow-xs">
                   {gift.tag}
-                </span>
-                <span className="absolute top-2.5 right-2.5 bg-[#251838]/80 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize">
+                </div>
+
+                <div className="absolute top-2.5 right-2.5 bg-[#1E142B]/85 backdrop-blur-xs text-white text-[9.5px] font-semibold px-2 py-0.5 rounded-md capitalize">
                   {gift.occasion}
-                </span>
+                </div>
               </div>
 
-              {/* Body */}
+              {/* Editorial Meta */}
               <div className="flex flex-col flex-grow">
-                <h4 className="font-serif text-base font-bold text-[#251838] leading-tight mb-1.5 group-hover:text-[#794ACF] transition-colors">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#8C7F9D]">
+                    {gift.category}
+                  </span>
+                  <span className="text-[11px] text-[#C29352] font-semibold tabular-nums">
+                    ★ {gift.rating ? gift.rating.split(' ')[0] : '4.9'}
+                  </span>
+                </div>
+
+                <h4 className="font-serif text-[15px] font-bold text-[#1E142B] leading-snug mb-1 group-hover:text-[#6E39C4] transition-colors">
                   {gift.name}
                 </h4>
-                <p className="text-xs text-[#5C4F6E] line-clamp-2 leading-relaxed mb-4 flex-grow">
+
+                <p className="text-xs text-[#5D506F] line-clamp-2 leading-relaxed mb-4 flex-grow">
                   {gift.description}
                 </p>
 
-                {/* Footer Row */}
-                <div className="flex items-center justify-between pt-3 border-t border-[#E8E1F0]">
-                  <span className="text-lg font-bold text-[#251838]">
-                    ${Number(gift.price).toFixed(2)}
-                  </span>
+                {/* Bottom Row: Price & Tactile Add Action */}
+                <div className="flex items-center justify-between pt-3 border-t border-[#F5F1FA]">
+                  <div className="flex flex-col">
+                    <span className="text-[9.5px] uppercase tracking-wider text-[#8C7F9D] font-bold">
+                      Price
+                    </span>
+                    <span className="text-base font-bold text-[#1E142B] tabular-nums">
+                      ${Number(gift.price).toFixed(2)}
+                    </span>
+                  </div>
+
                   <button
                     onClick={() => handleAdd(gift)}
-                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold press-tactile cursor-pointer ${
                       addedIds[gift.id]
-                        ? 'bg-[#2E7D58] text-white'
-                        : 'bg-[#F0EBF7] hover:bg-[#794ACF] text-[#794ACF] hover:text-white border border-[#794ACF]/20 hover:border-[#794ACF]'
+                        ? 'bg-[#257850] text-white shadow-xs'
+                        : 'bg-[#FAF8FD] hover:bg-[#F2ECFA] text-[#1E142B] hover:text-[#6E39C4] border border-[#EBE4F2] hover:border-[#6E39C4]/40'
                     }`}
                   >
                     {addedIds[gift.id] ? (
                       <>
                         <Check className="w-3.5 h-3.5" />
-                        <span>Added!</span>
+                        <span>Curated</span>
                       </>
                     ) : (
                       <>
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus className="w-3.5 h-3.5 text-[#6E39C4]" />
                         <span>Add to Box</span>
                       </>
                     )}

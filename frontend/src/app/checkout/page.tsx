@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
 import { createOrder } from '@/lib/api';
-import { ShieldCheck, ArrowRight } from 'lucide-react';
+import { ShieldCheck, ArrowRight, Feather, Lock, CreditCard } from 'lucide-react';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -41,7 +41,6 @@ export default function CheckoutPage() {
         payment_method: paymentMethod === 'card' ? 'Credit Card' : paymentMethod === 'paypal' ? 'PayPal' : 'Bank Wire',
       });
 
-      // Also persist to localStorage for offline records
       const existing = JSON.parse(localStorage.getItem('orders') || '[]');
       existing.push({
         recipient: recipientName,
@@ -53,11 +52,10 @@ export default function CheckoutPage() {
       localStorage.setItem('orders', JSON.stringify(existing));
 
       clearCart();
-      showToast('✨ Celebration Order Confirmed!');
+      showToast('Consignment Confirmed');
       router.push('/orders');
     } catch (err) {
       console.error('Error creating order:', err);
-      // Fallback: save locally
       const existing = JSON.parse(localStorage.getItem('orders') || '[]');
       existing.push({
         recipient: recipientName,
@@ -67,9 +65,8 @@ export default function CheckoutPage() {
         status: 'Preparing Signature Lavender Packaging',
       });
       localStorage.setItem('orders', JSON.stringify(existing));
-
       clearCart();
-      showToast('✨ Celebration Order Confirmed!');
+      showToast('Consignment Confirmed (Local Archive)');
       router.push('/orders');
     } finally {
       setSubmitting(false);
@@ -77,176 +74,203 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#FAF8FD]">
       <Navbar />
 
-      <main className="flex-1 max-w-[1100px] mx-auto px-6 py-12 w-full">
+      <main className="flex-1 max-w-[1260px] mx-auto px-6 py-12 w-full">
         <div className="mb-8">
-          <span className="text-xs font-bold text-[#794ACF] uppercase tracking-wider block mb-1">
-            Final Step
-          </span>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#251838]">
-            Delivery & Packaging Finalization
+          <div className="inline-flex items-center gap-2 bg-[#F2ECFA] text-[#6E39C4] px-3 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-[0.16em] mb-2">
+            <span>Bespoke Dispatch Desk</span>
+          </div>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#1E142B] tracking-tight">
+            Finalize Your Consignment
           </h1>
+          <p className="text-xs sm:text-sm text-[#5D506F] mt-1">
+            Specify recipient coordinates and pen your sentiment for our master calligrapher.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-9 items-start">
-          {/* Left Form */}
-          <div className="bg-white border border-[#E8E1F0] rounded-3xl p-8 shadow-sm">
-            <h3 className="font-serif text-xl font-bold text-[#251838] mb-5">
-              Recipient & Delivery Details
-            </h3>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-8 items-start">
+          {/* Main Checkout Fields */}
+          <div className="space-y-6">
+            
+            {/* 1. Recipient Coordinates */}
+            <div className="bg-white border border-[#EBE4F2] rounded-3xl p-7 shadow-subtle">
+              <h3 className="font-serif text-lg font-bold text-[#1E142B] mb-5">
+                1. Recipient & Courier Transit
+              </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#8A7D9B]">
-                    Recipient Name
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#8C7F9D]">
+                    Recipient Full Name
                   </label>
                   <input
                     type="text"
                     required
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
-                    placeholder="e.g. Lady Clara"
-                    className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-3 text-xs text-[#251838] outline-none focus:border-[#794ACF] focus:ring-2 focus:ring-[#794ACF]/15 transition-all"
+                    placeholder="e.g. Lady Vivienne Montgomery"
+                    className="bg-[#FAF8FD] border border-[#EBE4F2] focus:border-[#6E39C4] focus:bg-white rounded-xl px-4 py-2.5 text-xs text-[#1E142B] outline-none transition-[border-color,background-color]"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#8A7D9B]">
-                    Celebration Date
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#8C7F9D]">
+                    Celebration Arrival Date
                   </label>
                   <input
                     type="date"
                     required
                     value={deliveryDate}
                     onChange={(e) => setDeliveryDate(e.target.value)}
-                    className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-3 text-xs text-[#251838] outline-none focus:border-[#794ACF] focus:ring-2 focus:ring-[#794ACF]/15 transition-all"
+                    className="bg-[#FAF8FD] border border-[#EBE4F2] focus:border-[#6E39C4] focus:bg-white rounded-xl px-4 py-2 text-xs text-[#1E142B] outline-none transition-[border-color,background-color]"
+                  />
+                </div>
+
+                <div className="sm:col-span-2 flex flex-col gap-1.5">
+                  <label className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#8C7F9D]">
+                    Full Delivery Address & Residence
+                  </label>
+                  <textarea
+                    required
+                    rows={2}
+                    value={deliveryAddress}
+                    onChange={(e) => setDeliveryAddress(e.target.value)}
+                    placeholder="Suite, Building Name, Street Address, City, Postal Code"
+                    className="bg-[#FAF8FD] border border-[#EBE4F2] focus:border-[#6E39C4] focus:bg-white rounded-xl px-4 py-2.5 text-xs text-[#1E142B] outline-none resize-none transition-[border-color,background-color]"
                   />
                 </div>
               </div>
+            </div>
 
-              <div className="space-y-1">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-[#8A7D9B]">
-                  Delivery Address
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={deliveryAddress}
-                  onChange={(e) => setDeliveryAddress(e.target.value)}
-                  placeholder="Street, Suite or Apartment, City, Postal Code"
-                  className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-3 text-xs text-[#251838] outline-none focus:border-[#794ACF] focus:ring-2 focus:ring-[#794ACF]/15 transition-all"
-                />
+            {/* 2. Calligrapher's Parchment Note */}
+            <div className="bg-white border border-[#EBE4F2] rounded-3xl p-7 shadow-subtle">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Feather className="w-4 h-4 text-[#C29352]" />
+                  <h3 className="font-serif text-lg font-bold text-[#1E142B]">
+                    2. Calligraphy Card Sentiment
+                  </h3>
+                </div>
+                <span className="text-[10.5px] font-bold text-[#257850] uppercase tracking-wider">
+                  Complimentary
+                </span>
               </div>
+              <p className="text-xs text-[#5D506F] mb-3 leading-relaxed">
+                Our in-house calligrapher transcribes your words in sepia archival ink on 300gsm French cotton rag paper, sealed with gold wax.
+              </p>
+              <textarea
+                rows={3}
+                value={calligraphyNote}
+                onChange={(e) => setCalligraphyNote(e.target.value)}
+                placeholder="Pen your message here... e.g. 'Dearest Camille, celebrating your grace and timeless joy. Forever yours, Julian.'"
+                className="w-full bg-[#FBF6EE]/70 border border-[#C29352]/30 focus:border-[#C29352] rounded-xl p-4 text-xs font-serif text-[#1E142B] italic outline-none resize-none leading-relaxed"
+              />
+            </div>
 
-              <div className="space-y-1">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-[#8A7D9B]">
-                  Handwritten Calligraphy Message (Included Free)
-                </label>
-                <textarea
-                  rows={3}
-                  value={calligraphyNote}
-                  onChange={(e) => setCalligraphyNote(e.target.value)}
-                  placeholder="Write the heartfelt sentiment to be penned in sepia ink and sealed with gold wax..."
-                  className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-3 text-xs text-[#251838] outline-none focus:border-[#794ACF] focus:ring-2 focus:ring-[#794ACF]/15 transition-all"
-                />
-              </div>
-
-              <h3 className="font-serif text-xl font-bold text-[#251838] pt-6 pb-2">
-                Secure Payment
+            {/* 3. Secure Payment Method */}
+            <div className="bg-white border border-[#EBE4F2] rounded-3xl p-7 shadow-subtle">
+              <h3 className="font-serif text-lg font-bold text-[#1E142B] mb-4">
+                3. Payment Method
               </h3>
-
-              <div className="flex gap-2.5 mb-4">
-                {(['card', 'paypal', 'bank'] as const).map((method) => (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {[
+                  { id: 'card', label: 'Credit Card / Apple Pay' },
+                  { id: 'paypal', label: 'PayPal Checkout' },
+                  { id: 'bank', label: 'Direct Bank Wire' },
+                ].map((item) => (
                   <button
-                    key={method}
+                    key={item.id}
                     type="button"
-                    onClick={() => setPaymentMethod(method)}
-                    className={`flex-1 py-3 px-2 rounded-xl text-xs font-semibold text-center transition-all cursor-pointer ${
-                      paymentMethod === method
-                        ? 'bg-white border-2 border-[#794ACF] text-[#794ACF] shadow-sm'
-                        : 'bg-[#F4F0F9] border border-[#E8E1F0] text-[#5C4F6E]'
+                    onClick={() => setPaymentMethod(item.id as any)}
+                    className={`py-3 px-4 rounded-xl text-xs font-semibold border transition-colors press-tactile cursor-pointer text-left ${
+                      paymentMethod === item.id
+                        ? 'bg-[#1E142B] text-white border-[#1E142B] shadow-xs'
+                        : 'bg-[#FAF8FD] text-[#5D506F] border-[#EBE4F2] hover:border-[#6E39C4]/40 hover:text-[#1E142B]'
                     }`}
                   >
-                    {method === 'card' ? '💳 Credit Card' : method === 'paypal' ? '🅿️ PayPal' : '🏛️ Bank Wire'}
+                    {item.label}
                   </button>
                 ))}
               </div>
-
-              {paymentMethod === 'card' && (
-                <div className="space-y-3 p-4 bg-[#F9F7FC] border border-[#E8E1F0] rounded-2xl">
-                  <input
-                    type="text"
-                    placeholder="4242 •••• •••• 4242"
-                    className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-2.5 text-xs text-[#251838] outline-none"
-                  />
-                  <div className="grid grid-cols-2 gap-3">
-                    <input
-                      type="text"
-                      placeholder="MM/YY"
-                      className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-2.5 text-xs text-[#251838] outline-none"
-                    />
-                    <input
-                      type="text"
-                      placeholder="CVV"
-                      className="w-full bg-white border border-[#E8E1F0] rounded-xl px-4 py-2.5 text-xs text-[#251838] outline-none"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={submitting || cart.length === 0}
-                className="w-full mt-6 bg-[#794ACF] hover:bg-[#6332BE] text-white py-4 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(121,74,207,0.35)] transition-all cursor-pointer disabled:opacity-50"
-              >
-                <span>{submitting ? 'Confirming Order...' : 'Authorize & Confirm Gift Dispatch'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </form>
+            </div>
           </div>
 
-          {/* Right Summary */}
-          <div className="bg-[#F4F0F9] border border-[#E8E1F0] rounded-3xl p-7 space-y-4">
-            <h3 className="font-serif text-lg font-bold text-[#251838]">
-              Gift Box Review
+          {/* Right Column: Order Summary Preview */}
+          <div className="bg-white border border-[#EBE4F2] rounded-3xl p-7 shadow-subtle flex flex-col gap-5 sticky top-24">
+            <h3 className="font-serif text-lg font-bold text-[#1E142B]">
+              Consignment Items ({cart.length})
             </h3>
 
-            <div className="divide-y divide-[#E8E1F0] max-h-72 overflow-y-auto pr-1">
+            {/* Item list */}
+            <div className="space-y-3 max-h-56 overflow-y-auto divide-y divide-[#F5F1FA]">
               {cart.map((item) => (
-                <div key={item.id} className="py-2.5 flex justify-between items-center text-xs">
-                  <div>
-                    <div className="font-semibold text-[#251838]">{item.name}</div>
-                    <div className="text-[11px] text-[#8A7D9B]">${Number(item.price).toFixed(2)} × {item.quantity}</div>
+                <div key={item.id} className="pt-2.5 first:pt-0 flex items-center justify-between text-xs">
+                  <div className="min-w-0 pr-3">
+                    <span className="font-semibold text-[#1E142B] block truncate">{item.name}</span>
+                    <span className="text-[11px] text-[#8C7F9D] tabular-nums">
+                      ${Number(item.price).toFixed(2)} × {item.quantity}
+                    </span>
                   </div>
-                  <span className="font-bold text-[#794ACF]">${(Number(item.price) * item.quantity).toFixed(2)}</span>
+                  <span className="font-bold text-[#1E142B] tabular-nums">
+                    ${(Number(item.price) * item.quantity).toFixed(2)}
+                  </span>
                 </div>
               ))}
             </div>
 
-            <div className="border-t border-[#E8E1F0] pt-4 space-y-2 text-xs text-[#5C4F6E]">
+            <div className="space-y-2.5 text-xs text-[#5D506F] pt-4 border-t border-[#F5F1FA]">
               <div className="flex justify-between">
-                <span>Keepsakes Total</span>
-                <span className="font-semibold text-[#251838]">${subtotal.toFixed(2)}</span>
+                <span>Treasures Subtotal</span>
+                <span className="font-semibold text-[#1E142B] tabular-nums">${subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span>Signature Ribbon & Wax Seal</span>
-                <span className="font-semibold text-[#2E7D58]">Free</span>
+                <span>Maison Silk Packaging</span>
+                <span className="font-semibold text-[#257850]">Complimentary ($0.00)</span>
               </div>
               <div className="flex justify-between">
-                <span>Climate-Controlled Courier</span>
-                <span className="font-semibold text-[#251838]">$9.99</span>
+                <span>Handwritten Wax-Sealed Note</span>
+                <span className="font-semibold text-[#257850]">Complimentary ($0.00)</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Climate Courier</span>
+                <span className="font-semibold text-[#1E142B] tabular-nums">
+                  ${(cart.length > 0 ? 9.99 : 0).toFixed(2)}
+                </span>
+              </div>
+              <div className="pt-3 border-t border-[#EBE4F2] flex justify-between items-center text-sm">
+                <span className="font-bold text-[#1E142B]">Grand Total</span>
+                <span className="text-2xl font-bold text-[#6E39C4] tabular-nums">
+                  ${grandTotal.toFixed(2)}
+                </span>
               </div>
             </div>
 
-            <div className="border-t border-[#E8E1F0] pt-3 flex justify-between items-center text-sm font-bold text-[#251838]">
-              <span>Grand Total</span>
-              <span className="text-2xl text-[#794ACF]">${grandTotal.toFixed(2)}</span>
+            <button
+              type="submit"
+              disabled={submitting || cart.length === 0}
+              className={`w-full py-3.5 rounded-full text-xs font-semibold flex items-center justify-center gap-2 shadow-xs press-tactile cursor-pointer ${
+                submitting
+                  ? 'bg-[#8C7F9D] text-white cursor-wait'
+                  : 'bg-[#1E142B] hover:bg-[#140C1E] text-white'
+              }`}
+            >
+              {submitting ? (
+                <span>Dispatching Consignment...</span>
+              ) : (
+                <>
+                  <Lock className="w-3.5 h-3.5 text-[#E7C58E]" />
+                  <span>Confirm & Authorize ${grandTotal.toFixed(2)}</span>
+                </>
+              )}
+            </button>
+
+            <div className="flex items-center justify-center gap-2 text-[11px] text-[#8C7F9D] pt-2 border-t border-[#F5F1FA]">
+              <ShieldCheck className="w-4 h-4 text-[#257850]" />
+              <span>256-bit Encrypted Maison Vault</span>
             </div>
           </div>
-        </div>
+        </form>
       </main>
 
       <Footer />

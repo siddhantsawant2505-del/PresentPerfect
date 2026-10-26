@@ -122,7 +122,7 @@ export default function OrdersPage() {
                             {item.name} (x{item.quantity || 1})
                           </span>
                           <span className="font-bold text-[#794ACF]">
-                            ${((item.price || 0) * (item.quantity || 1)).toFixed(2)}
+                            ${((Number(item.price) || 0) * (Number(item.quantity) || 1)).toFixed(2)}
                           </span>
                         </div>
                       ))}
